@@ -522,23 +522,18 @@ class FakeUnitOfWork(unit_of_work.AbstractUnitOfWork):
 
 ### Domain Events: The Trade-Offs - Cons
 
-| Cons                                                                                                                                                                                             |
-| :--------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ❌ Adds complexity (Message Bus, event tracking/publishing mechanism).                                                                                                                          |
-| ❌ UoW publishing hides event handling (magic); `commit()` implicitly triggers handlers.                                                                                                        |
-| ❌ Default bus is synchronous; handlers run *within* the `commit()` call, potentially blocking the caller (e.g., web request) longer than expected. Async adds more complexity.                  |
-| ❌ Event chains can obscure overall workflow (harder to trace request flow end-to-end).                                                                                                           |
-| ❌ Risk of circular dependencies or infinite loops between handlers if not carefully designed.                                                                                                   |
-|           
+### Cons:
+*   ❌ Adds complexity (Message Bus, event tracking/publishing mechanism).
+*   ❌ UoW publishing hides event handling (magic); `commit()` implicitly triggers handlers.
+*   ❌ Default bus is synchronous; handlers run within the `commit()` call, potentially blocking the caller (e.g., web request) longer than expected. Async adds more complexity.
+*   ❌ Event chains can obscure overall workflow (harder to trace request flow end-to-end).
+*   ❌ Risk of circular dependencies or infinite loops between handlers if not carefully designed.
+*   ❌ Error handling within handlers needs consideration (retry? dead-letter queue?).
+
 ---
-
 ### Domain Events: The Trade-Offs - Pros
-
-| Pros                                                                                                                               |
-| :--------------------------------------------------------------------------------------------------------------------------------- |
-| ✅ Nice separation of responsibilities (SRP).                                                                                      |
-| ✅ Handlers decoupled from core logic; easy to change/add reactions.                                                               |
-| ✅ Events model real-world concepts & improve communication.                                                                       |
-| ✅ Enables eventual consistency across aggregates.                                                                                 |
-|                                                                                                                                    |
-|             
+### Pros:
+*   ✅ Nice separation of responsibilities (SRP).
+*   ✅ Handlers decoupled from core logic; easy to change/add reactions.
+*   ✅ Events model real-world concepts & improve communication.
+*   ✅ Enables eventual consistency across aggregates.
