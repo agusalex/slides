@@ -537,3 +537,9 @@ class FakeUnitOfWork(unit_of_work.AbstractUnitOfWork):
 *   ✅ Handlers decoupled from core logic; easy to change/add reactions.
 *   ✅ Events model real-world concepts & improve communication.
 *   ✅ Enables eventual consistency across aggregates.
+
+---
+class: center, middle
+# Thank You!
+
+### Questions ???
