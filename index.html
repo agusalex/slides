@@ -45,8 +45,7 @@ font-weight: normal;
     <div id="loading-message">Loading presentation...</div>
     <div id="error-message" style="display: none;"></div>
 
-    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"></script>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+    <script src="js/remark-latest.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -73,32 +72,6 @@ font-weight: normal;
                             scroll: false,
                         }
                     });
-
-                    // Setup MathJax (can run after remark is initialized)
-                    MathJax.Hub.Config({
-                        tex2jax: {
-                            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-                        }
-                    });
-                    MathJax.Hub.Queue(function() {
-                        var jax = MathJax.Hub.getAllJax();
-                        if (jax.length > 0) {
-                            var elements = jax.map(function(elem) { // Corrected map usage
-                                 if (elem.SourceElement() && elem.SourceElement().parentNode) {
-                                     return elem.SourceElement().parentNode;
-                                 }
-                                 return null;
-                             }).filter(function(el) { return el !== null; });
-
-                             if (typeof $ !== 'undefined') {
-                                 $(elements).addClass('has-jax');
-                             } else {
-                                 elements.forEach(el => el.classList.add('has-jax'));
-                             }
-                        }
-                    });
-                    MathJax.Hub.Configured();
-
                 })
                 .catch(error => {
                     console.error('Error loading presentation:', error);
