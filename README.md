@@ -112,7 +112,7 @@ def allocate(
 *   Apply Dependency Inversion Principle (DIP) to notifications.
 
 ---
-
+class: center, middle
 ### Solution: Domain Events and a Message Bus
 
 1.  **Domain Events:** Objects representing significant occurrences in the domain.
