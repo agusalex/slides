@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Club - Cosmic Python Chapter 8</title>
+    <meta charset="utf-8">
+<style>
+@import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+body { font-family: 'Droid Serif';}
+h1, h2, h3 {
+font-family: 'Yanone Kaffeesatz';
+font-weight: normal;
+}
+.remark-slide-content { font-size:26px; }
+/* Ensure code blocks can scroll horizontally if needed */
+.remark-code {
+  overflow-x: auto !important; /* Make sure horizontal overflow scrolls */
+  max-width: 100%; /* Prevent breaking layout excessively */
+}
+.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+/* Basic styling for loading/error messages */
+#loading-message, #error-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    color: #555;
+}
+#error-message {
+    color: red;
+    max-width: 80%;
+    text-align: center;
+}
+
+</style>
+</head>
+<body>
+    <!-- No textarea needed here -->
+
+    <!-- Loading indicator -->
+    <div id="loading-message">Loading presentation...</div>
+    <div id="error-message" style="display: none;"></div>
+
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured" type="text/javascript"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingMessage = document.getElementById('loading-message');
+            const errorMessage = document.getElementById('error-message');
+            const readmePath = 'README.md'; // Or adjust path if needed
+
+            fetch(readmePath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status} - Could not fetch ${readmePath}`);
+                    }
+                    return response.text();
+                })
+                .then(markdownContent => {
+                    // Hide loading message
+                    if (loadingMessage) loadingMessage.style.display = 'none';
+
+                    // Initialize Remark, passing the fetched source directly
+                    var slideshow = remark.create({
+                        source: markdownContent, // <-- Pass the markdown here
+                        countIncrementalSlides: false,
+                        navigation: {
+                            scroll: false,
+                        }
+                    });
+
+                    // Setup MathJax (can run after remark is initialized)
+                    MathJax.Hub.Config({
+                        tex2jax: {
+                            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+                        }
+                    });
+                    MathJax.Hub.Queue(function() {
+                        var jax = MathJax.Hub.getAllJax();
+                        if (jax.length > 0) {
+                            var elements = jax.map(function(elem) { // Corrected map usage
+                                 if (elem.SourceElement() && elem.SourceElement().parentNode) {
+                                     return elem.SourceElement().parentNode;
+                                 }
+                                 return null;
+                             }).filter(function(el) { return el !== null; });
+
+                             if (typeof $ !== 'undefined') {
+                                 $(elements).addClass('has-jax');
+                             } else {
+                                 elements.forEach(el => el.classList.add('has-jax'));
+                             }
+                        }
+                    });
+                    MathJax.Hub.Configured();
+
+                })
+                .catch(error => {
+                    console.error('Error loading presentation:', error);
+                    if (loadingMessage) loadingMessage.style.display = 'none';
+                    if (errorMessage) {
+                        errorMessage.textContent = `Failed to load presentation from ${readmePath}. Error: ${error.message}. Please check the file path and browser console.`;
+                        errorMessage.style.display = 'block';
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
